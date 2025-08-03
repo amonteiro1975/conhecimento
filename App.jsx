@@ -1,0 +1,1 @@
+// App.jsx gerado - conteúdo disponível via interface acima
