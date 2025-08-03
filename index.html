@@ -1,1 +1,632 @@
-<!DOCTYPE html><html><head><title>Grupo SINOP</title></head><body><div id='root'></div></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Base de Conhecimento TI - Grupo SINOP</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9f9f9;
+    color: #0D3C61; /* azul escuro Grupo SINOP */
+  }
+  a {
+    color: #0066B3; /* azul médio */
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  header {
+    background: #0D3C61;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  header a {
+    color: white;
+  }
+  nav {
+    background: #0066B3;
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 2rem;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: background-color 0.3s;
+  }
+  nav button.active, nav button:hover {
+    background: #00A651; /* verde claro */
+  }
+  main {
+    padding: 1rem 2rem;
+    min-height: 75vh;
+  }
+  /* Cards categorias */
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+    gap: 1rem;
+  }
+  .category-card {
+    background: white;
+    border: 2px solid #0066B3;
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.1);
+  }
+  .category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  .category-info {
+    font-size: 0.85rem;
+    color: #333;
+  }
+  .tags-container {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    background: #00A651;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .links-list {
+    margin-top: 0.7rem;
+    max-height: 140px;
+    overflow-y: auto;
+    border-top: 1px solid #ddd;
+    padding-top: 0.5rem;
+  }
+  .link-item {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  .link-item a {
+    color: #0D3C61;
+  }
+  .link-tags {
+    margin-left: 5px;
+    font-size: 0.75rem;
+    color: #00A651;
+  }
+  /* Pesquisa geral */
+  .search-bar {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+  .search-bar input[type="text"] {
+    flex-grow: 1;
+    padding: 0.4rem 0.7rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1.8px solid #0066B3;
+  }
+  .search-bar button {
+    padding: 0.4rem 1rem;
+    background: #0066B3;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .search-bar button:hover {
+    background: #004080;
+  }
+  /* Forms */
+  .form-section {
+    background: white;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-top: 1rem;
+    max-width: 500px;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.1);
+  }
+  .form-section h3 {
+    margin-top: 0; margin-bottom: 1rem;
+    color: #0066B3;
+  }
+  .form-group {
+    margin-bottom: 0.9rem;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  input[type="text"], input[type="url"], select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1.5px solid #ccc;
+    transition: border-color 0.3s;
+  }
+  input[type="text"]:focus, input[type="url"]:focus, select:focus {
+    border-color: #0066B3;
+    outline: none;
+  }
+  button[type="submit"] {
+    background: #00A651;
+    border: none;
+    color: white;
+    padding: 0.6rem 1.3rem;
+    border-radius: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  button[type="submit"]:hover {
+    background: #007A32;
+  }
+  /* Dashboard */
+  .dashboard-section {
+    max-width: 900px;
+  }
+  canvas {
+    background: white;
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.12);
+    margin-bottom: 2rem;
+  }
+  /* Usuários */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+  }
+  th, td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    color: #0D3C61;
+  }
+  th {
+    background: #0066B3;
+    color: white;
+  }
+  .user-actions button {
+    margin-right: 0.3rem;
+    background: #00A651;
+    border: none;
+    color: white;
+    padding: 0.3rem 0.7rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .user-actions button.delete {
+    background: #D32F2F;
+  }
+  /* Scroll bar para links */
+  .links-list::-webkit-scrollbar {
+    width: 6px;
+  }
+  .links-list::-webkit-scrollbar-thumb {
+    background-color: #00A651;
+    border-radius: 3px;
+  }
+  /* Responsividade */
+  @media(max-width: 600px) {
+    nav {
+      flex-wrap: wrap;
+    }
+    .categories-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="https://www.gruposinop.com.br" target="_blank" rel="noopener noreferrer">
+    Base de Conhecimento TI - Grupo SINOP
+  </a>
+</header>
+<nav>
+  <button class="tab-button active" data-tab="links-tab">Links</button>
+  <button class="tab-button" data-tab="dashboard-tab">Dashboard</button>
+  <button class="tab-button" data-tab="users-tab">Usuários</button>
+</nav>
+<main>
+  <!-- Aba Links -->
+  <section id="links-tab" class="tab-content active">
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Pesquisar por tags, links ou palavras..." />
+      <button id="search-clear" title="Limpar pesquisa">✕</button>
+    </div>
+    <div class="search-bar" style="margin-top:0.4rem;">
+      <input type="text" id="google-search-input" placeholder="Pesquisar no Google..." />
+      <button id="google-search-button">Buscar Google</button>
+    </div>
+
+    <div style="margin-top: 1rem; display: flex; gap: 2rem; flex-wrap: wrap;">
+      <div>
+        <div class="form-section">
+          <h3>Criar Categoria</h3>
+          <form id="category-form">
+            <div class="form-group">
+              <label for="category-name">Nome da categoria:</label>
+              <input type="text" id="category-name" required />
+            </div>
+            <button type="submit">Adicionar Categoria</button>
+          </form>
+        </div>
+        <div class="form-section" style="margin-top:1.5rem;">
+          <h3>Criar Link</h3>
+          <form id="link-form">
+            <div class="form-group">
+              <label for="link-title">Título do link:</label>
+              <input type="text" id="link-title" required />
+            </div>
+            <div class="form-group">
+              <label for="link-url">URL:</label>
+              <input type="url" id="link-url" required />
+            </div>
+            <div class="form-group">
+              <label for="link-category">Categoria:</label>
+              <select id="link-category" required>
+                <option value="">Selecione</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="link-tags">Tags (separe por vírgula):</label>
+              <input type="text" id="link-tags" placeholder="ex: rede, segurança, software" />
+            </div>
+            <button type="submit">Adicionar Link</button>
+          </form>
+        </div>
+      </div>
+
+      <div style="flex-grow: 1;">
+        <div class="categories-grid" id="categories-container">
+          <!-- Cards de categorias vão aparecer aqui -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aba Dashboard -->
+  <section id="dashboard-tab" class="tab-content" style="display:none;">
+    <div class="dashboard-section">
+      <canvas id="chart-categories" width="800" height="300"></canvas>
+      <canvas id="chart-tags" width="800" height="300"></canvas>
+    </div>
+  </section>
+
+  <!-- Aba Usuários -->
+  <section id="users-tab" class="tab-content" style="display:none;">
+    <div style="max-width: 900px;">
+      <div class="form-section">
+        <h3>Cadastrar Usuário</h3>
+        <form id="user-form">
+          <div class="form-group">
+            <label for="user-name">Nome do usuário:</label>
+            <input type="text" id="user-name" required />
+          </div>
+          <div class="form-group">
+            <label for="user-access">Nível de acesso:</label>
+            <select id="user-access" required>
+              <option value="">Selecione</option>
+              <option value="admin">Administrador</option>
+              <option value="user">Usuário</option>
+            </select>
+          </div>
+          <button type="submit">Adicionar Usuário</button>
+        </form>
+      </div>
+      <div style="margin-top:2rem;">
+        <h3>Lista de Usuários</h3>
+        <table id="users-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Acesso</th>
+              <th>Tags Criadas</th>
+              <th>Links Consultados</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- usuários aparecerão aqui -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Dados iniciais
+  let categories = [];
+  let links = [];
+  let users = [];
+  let currentUserId = 1; // Simulação usuário logado (sempre admin para protótipo)
+  
+  // Histórico de tags criadas e links consultados por usuário: será um objeto {userId: {tags: Set, links: Set}}
+  let userActivity = {};
+  
+  // Inicializa abas
+  const tabButtons = document.querySelectorAll(".tab-button");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tabButtons.forEach(b => b.classList.remove("active"));
+      tabContents.forEach(c => c.style.display = "none");
+      btn.classList.add("active");
+      document.getElementById(btn.dataset.tab).style.display = "block";
+      if(btn.dataset.tab === "dashboard-tab") {
+        updateDashboardCharts();
+      }
+    });
+  });
+
+  // Função para renderizar categorias e links
+  function renderCategories(filterText = "") {
+    const container = document.getElementById("categories-container");
+    container.innerHTML = "";
+    let filteredCategories = categories;
+
+    if(filterText.trim()) {
+      const ft = filterText.toLowerCase();
+      filteredCategories = categories.filter(cat => {
+        // Filtra categoria se nome, ou algum link ou tag na categoria bater com filtro
+        if(cat.name.toLowerCase().includes(ft)) return true;
+        const catLinks = links.filter(l => l.categoryId === cat.id);
+        for(let l of catLinks) {
+          if(l.title.toLowerCase().includes(ft) || l.url.toLowerCase().includes(ft)) return true;
+          if(l.tags.some(t => t.toLowerCase().includes(ft))) return true;
+        }
+        return false;
+      });
+    }
+
+    for(let category of filteredCategories) {
+      const catLinks = links.filter(l => l.categoryId === category.id);
+      // Contagem tags única na categoria
+      const catTagsSet = new Set(catLinks.flatMap(l => l.tags));
+      const card = document.createElement("div");
+      card.className = "category-card";
+      card.innerHTML = `
+        <div class="category-header">
+          <span>📁 ${category.name}</span>
+          <span>${catLinks.length} links / ${catTagsSet.size} tags</span>
+        </div>
+        <div class="tags-container">
+          ${[...catTagsSet].map(tag => `<span class="tag">${tag}</span>`).join("")}
+        </div>
+        <div class="links-list">
+          ${catLinks.map(l => `<div class="link-item"><a href="${l.url}" target="_blank" rel="noopener noreferrer">${l.title}</a> <span class="link-tags">[${l.tags.join(", ")}]</span></div>`).join("")}
+        </div>
+      `;
+      container.appendChild(card);
+    }
+  }
+
+  // Atualiza dropdown categoria no formulário link
+  function updateCategorySelect() {
+    const select = document.getElementById("link-category");
+    select.innerHTML = '<option value="">Selecione</option>';
+    for(let c of categories) {
+      const option = document.createElement("option");
+      option.value = c.id;
+      option.textContent = c.name;
+      select.appendChild(option);
+    }
+  }
+
+  // Formulário categoria
+  document.getElementById("category-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = document.getElementById("category-name").value.trim();
+    if(!name) return alert("Informe o nome da categoria.");
+    // Checa duplicado
+    if(categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+      alert("Categoria já existe.");
+      return;
+    }
+    const newCat = {id: Date.now(), name};
+    categories.push(newCat);
+    document.getElementById("category-name").value = "";
+    updateCategorySelect();
+    renderCategories();
+  });
+
+  // Formulário link
+  document.getElementById("link-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const title = document.getElementById("link-title").value.trim();
+    const url = document.getElementById("link-url").value.trim();
+    const categoryId = Number(document.getElementById("link-category").value);
+    let tagsStr = document.getElementById("link-tags").value.trim();
+    if(!title || !url || !categoryId) return alert("Preencha título, URL e categoria.");
+    let tags = [];
+    if(tagsStr) {
+      tags = tagsStr.split(",").map(t => t.trim()).filter(t => t.length > 0);
+    }
+    const newLink = {id: Date.now(), title, url, categoryId, tags};
+    links.push(newLink);
+    document.getElementById("link-title").value = "";
+    document.getElementById("link-url").value = "";
+    document.getElementById("link-category").value = "";
+    document.getElementById("link-tags").value = "";
+
+    // Atualiza histórico tags do usuário
+    if(!userActivity[currentUserId]) userActivity[currentUserId] = {tags: new Set(), links: new Set()};
+    tags.forEach(t => userActivity[currentUserId].tags.add(t.toLowerCase()));
+
+    renderCategories();
+  });
+
+  // Pesquisa geral
+  document.getElementById("search-input").addEventListener("input", e => {
+    renderCategories(e.target.value);
+  });
+  document.getElementById("search-clear").addEventListener("click", () => {
+    document.getElementById("search-input").value = "";
+    renderCategories();
+  });
+
+  // Pesquisa google interna
+  document.getElementById("google-search-button").addEventListener("click", () => {
+    const query = document.getElementById("google-search-input").value.trim();
+    if(!query) return alert("Digite algo para pesquisar no Google.");
+    const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+    window.open(url, "_blank");
+  });
+
+  // Usuários
+
+  function renderUsers() {
+    const tbody = document.querySelector("#users-table tbody");
+    tbody.innerHTML = "";
+    for(let user of users) {
+      const tagsCount = userActivity[user.id]?.tags.size || 0;
+      const linksCount = userActivity[user.id]?.links.size || 0;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${user.name}</td>
+        <td>${user.access}</td>
+        <td>${tagsCount}</td>
+        <td>${linksCount}</td>
+        <td class="user-actions">
+          <button onclick="deleteUser(${user.id})" class="delete" title="Excluir usuário">Excluir</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+  }
+
+  // Cadastro usuário
+  document.getElementById("user-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = document.getElementById("user-name").value.trim();
+    const access = document.getElementById("user-access").value;
+    if(!name || !access) return alert("Preencha nome e nível de acesso.");
+    if(users.some(u => u.name.toLowerCase() === name.toLowerCase())) {
+      alert("Usuário já existe.");
+      return;
+    }
+    const newUser = {id: Date.now(), name, access};
+    users.push(newUser);
+    userActivity[newUser.id] = {tags: new Set(), links: new Set()};
+    document.getElementById("user-name").value = "";
+    document.getElementById("user-access").value = "";
+    renderUsers();
+  });
+
+  // Deleta usuário
+  function deleteUser(id) {
+    if(!confirm("Confirma exclusão do usuário?")) return;
+    users = users.filter(u => u.id !== id);
+    delete userActivity[id];
+    renderUsers();
+  }
+
+  window.deleteUser = deleteUser; // para ser acessível globalmente
+
+  // Dashboard - gráficos
+  let chartCategories = null;
+  let chartTags = null;
+
+  function updateDashboardCharts() {
+    // Dados categoria
+    const catLabels = categories.map(c => c.name);
+    const catCounts = categories.map(c => links.filter(l => l.categoryId === c.id).length);
+
+    // Dados tags - contagem total por tag em todos links
+    let tagMap = {};
+    for(let l of links) {
+      for(let t of l.tags) {
+        const lowt = t.toLowerCase();
+        tagMap[lowt] = (tagMap[lowt] || 0) + 1;
+      }
+    }
+    const tagLabels = Object.keys(tagMap);
+    const tagCounts = Object.values(tagMap);
+
+    const ctxCat = document.getElementById("chart-categories").getContext("2d");
+    const ctxTags = document.getElementById("chart-tags").getContext("2d");
+
+    if(chartCategories) chartCategories.destroy();
+    if(chartTags) chartTags.destroy();
+
+    chartCategories = new Chart(ctxCat, {
+      type: 'bar',
+      data: {
+        labels: catLabels,
+        datasets: [{
+          label: 'Quantidade de Links por Categoria',
+          data: catCounts,
+          backgroundColor: '#0066B3'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {beginAtZero: true, precision: 0}
+        }
+      }
+    });
+
+    chartTags = new Chart(ctxTags, {
+      type: 'bar',
+      data: {
+        labels: tagLabels,
+        datasets: [{
+          label: 'Quantidade de Links por Tag',
+          data: tagCounts,
+          backgroundColor: '#00A651'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {beginAtZero: true, precision: 0}
+        }
+      }
+    });
+  }
+
+  // Inicializa
+  updateCategorySelect();
+  renderCategories();
+  renderUsers();
+
+</script>
+</body>
+</html>
