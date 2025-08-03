@@ -1,0 +1,19 @@
+{
+  "name": "base-conhecimento-sinop",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "recharts": "^2.6.2",
+    "lucide-react": "^0.293.0"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0"
+  }
+}
